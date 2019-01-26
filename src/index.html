@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+        <script id="vshader" type="x-shader/x-vertex">
+            // This shader is from the ThreeJS examples
+            precision highp float;
+            uniform mat4 modelViewMatrix;
+            uniform mat4 projectionMatrix;
+            attribute vec3 position;
+            attribute vec2 uv;
+            attribute vec3 translate;
+            varying vec2 vUv;
+            varying float vScale;
+            void main() {
+                vec4 mvPosition = modelViewMatrix * vec4( translate, 1.0 );
+                float scale = 20.0;
+                vScale = 1.0;
+                mvPosition.xyz += position * scale;
+                vUv = uv;
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        </script>
+        <script id="fshader" type="x-shader/x-fragment">
+            // This shader is from the ThreeJS examples
+            precision highp float;
+            uniform sampler2D map;
+            varying vec2 vUv;
+            varying float vScale;
+            void main() {
+                gl_FragColor = texture2D(map, vUv);
+            }
+        </script>
+	</body>
+</html>
