@@ -26,12 +26,13 @@ for ( var i = 0, i3 = 0, l = NUM_PARTICLES; i < l; i ++, i3 += 3 ) {
 geometry.addAttribute( 'translate', new THREE.InstancedBufferAttribute( translateArray, 3 ) );
 export const material = new THREE.RawShaderMaterial( {
     uniforms: {
-        map: { value: new THREE.TextureLoader().load( 'resources/metaball.png' ) },
+        map: { value: new THREE.ImageUtils.loadTexture( 'resources/metaball.png' ) },
     },
     vertexShader: document.getElementById( 'vshader' ).textContent,
     fragmentShader: document.getElementById( 'fshader' ).textContent,
     depthTest: true,
-    depthWrite: true
+    depthWrite: true,
+    transparent: true,
 } );
 const mesh = new THREE.Mesh( geometry, material );
 mesh.scale.set( SCR_WIDTH, SCR_HEIGHT, 1 );

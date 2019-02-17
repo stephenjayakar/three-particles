@@ -10,7 +10,6 @@
 	</head>
 	<body>
         <script id="vshader" type="x-shader/x-vertex">
-            // This shader is from the ThreeJS examples
             precision highp float;
             uniform mat4 modelViewMatrix;
             uniform mat4 projectionMatrix;
@@ -18,24 +17,24 @@
             attribute vec2 uv;
             attribute vec3 translate;
             varying vec2 vUv;
-            varying float vScale;
             void main() {
                 vec4 mvPosition = modelViewMatrix * vec4( translate, 1.0 );
                 float scale = 20.0;
-                vScale = 1.0;
                 mvPosition.xyz += position * scale;
                 vUv = uv;
                 gl_Position = projectionMatrix * mvPosition;
             }
         </script>
         <script id="fshader" type="x-shader/x-fragment">
-            // This shader is from the ThreeJS examples
             precision highp float;
             uniform sampler2D map;
             varying vec2 vUv;
             varying float vScale;
+            // HSL to RGB Convertion helpers
             void main() {
-                gl_FragColor = texture2D(map, vUv);
+                vec4 diffuseColor = texture2D( map, vUv );
+                gl_FragColor = diffuseColor;
+                if ( diffuseColor.w < 0.05 ) discard;
             }
         </script>
 	</body>
