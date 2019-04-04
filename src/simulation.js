@@ -71,7 +71,7 @@ export default class Simulation {
     const hash = particle.hash2d();
     const neighbors = map[hash];
     return neighbors
-      .map(n_i => particles[n_i])
+      .map(ni => particles[ni])
       .filter(n => n.index !== particle.index)
       .filter(n => particle.pos.clone().sub(n.pos).lengthSq() < HSQ);
   }
@@ -107,10 +107,10 @@ export default class Simulation {
       p.neighbors.forEach((n) => {
         const r2 = n.pos.clone().sub(p.pos).lengthSq();
         p.rho += MASS * POLY6 * ((HSQ - r2) ** 3.0);
-      })
+      });
       p.rho += MASS * POLY6 * (HSQ ** 3.0);
       p.p = GAS_CONST * (p.rho - REST_DENS);
-    })
+    });
   }
 
   computeForces = () => {
@@ -135,7 +135,7 @@ export default class Simulation {
   integrate = () => {
     const { particles } = this;
     particles.forEach((p) => {
-      const temp = p.f.clone().divideScalar(p.rho).multiplyScalar(DT);
+      const temp = p.f.clone().multiplyScalar(DT).divideScalar(p.rho);
       p.v.add(temp);
       p.pos.add(p.v.clone().multiplyScalar(DT));
       if (p.pos.x - EPS < 0.0) {
