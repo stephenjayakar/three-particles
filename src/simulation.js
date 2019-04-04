@@ -113,7 +113,6 @@ export default class Simulation {
     if (MOUSEDOWN) {
       const currentPos = new Vector2(MOUSEX, MOUSEY);
       mouseV = currentPos.clone().sub(mousePos);
-      console.log(mousePos, currentPos);
       mousePos = currentPos;
     }
   }
