@@ -43,9 +43,11 @@ class Particle {
   }
 
   updateBuffer = () => {
-    const { pos, index } = this;
+    const { pos, index, v } = this;
     positionArray[index * 3] = ((pos.x / SCR_WIDTH) * 2) - 1;
     positionArray[index * 3 + 1] = ((pos.y / SCR_HEIGHT) * 2) - 1;
+    // Using z coordinate as velocity
+    positionArray[index * 3 + 2] = v.length();
   }
 
   hash2d = () => {
