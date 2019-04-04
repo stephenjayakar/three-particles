@@ -1,4 +1,5 @@
 export const NUM_PARTICLES = 2000;
+export const MOUSE_SCALE = 200.0;
 export const SCR_WIDTH = 900;
 export const SCR_HEIGHT = 900;
 export const G = -10000 * 9.8;

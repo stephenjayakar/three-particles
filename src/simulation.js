@@ -16,7 +16,29 @@ import {
   VISC_LAP,
   EPS,
   BOUND_DAMPING,
+  MOUSE_SCALE,
 } from './constants';
+
+let MOUSEX = 0;
+let MOUSEY = 0;
+let MOUSEDOWN = false;
+let mouseV = new Vector2(0.0, 0.0);
+let mousePos = new Vector2(0.0, 0.0);
+
+document.body.onmousedown = () => {
+  MOUSEDOWN = true;
+  mousePos = new Vector2(MOUSEX, MOUSEY);
+};
+
+document.body.onmousemove = (event) => {
+  MOUSEX = event.pageX;
+  MOUSEY = event.pageY;
+};
+
+document.body.onmouseup = () => {
+  MOUSEDOWN = false;
+  mouseV = new Vector2(0.0, 0.0);
+};
 
 // TODO: figure out a better way to do this
 // position array has positions in format (x, y, z) from ranges -1 -> 1
@@ -79,11 +101,21 @@ export default class Simulation {
   }
 
   updateParticles = () => {
+    this.handleMouse();
     this.updateNeighbors();
     this.computeDensityPressure();
     this.computeForces();
     this.integrate();
     this.updateParticleBuffers();
+  }
+
+  handleMouse = () => {
+    if (MOUSEDOWN) {
+      const currentPos = new Vector2(MOUSEX, MOUSEY);
+      mouseV = currentPos.clone().sub(mousePos);
+      console.log(mousePos, currentPos);
+      mousePos = currentPos;
+    }
   }
 
   updateNeighbors = () => {
@@ -130,7 +162,10 @@ export default class Simulation {
       });
       const fgrav = new Vector2(0.0, G * p.rho);
       p.f = fpress.add(fvisc).add(fgrav);
-      // TODO: Add mouse stuff here
+
+      // Mouse Input
+      const scaleFactor = 200.0 * MOUSE_SCALE;
+      p.f.add(mouseV.clone().multiplyScalar(scaleFactor));
     });
   }
 
