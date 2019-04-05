@@ -6,6 +6,7 @@ import {
   G,
   REST_DENS,
   GAS_CONST,
+  GAUSS_SD,
   H,
   HSQ,
   MASS,
@@ -31,8 +32,11 @@ document.body.onmousedown = () => {
 };
 
 document.body.onmousemove = (event) => {
-  MOUSEX = event.pageX;
-  MOUSEY = event.pageY;
+  // Convert to particle space coords
+  let dx = window.innerWidth - SCR_WIDTH;
+  let dy = window.innerHeight - SCR_HEIGHT;
+  MOUSEX = event.pageX - (dx / 2);
+  MOUSEY = SCR_HEIGHT - (event.pageY - (dy / 2));
 };
 
 document.body.onmouseup = () => {
@@ -43,6 +47,11 @@ document.body.onmouseup = () => {
 // TODO: figure out a better way to do this
 // position array has positions in format (x, y, z) from ranges -1 -> 1
 let positionArray = null;
+
+const getGaussPdf = (dist) => {
+  const d = dist / SCR_WIDTH;
+  return 1.0 / (GAUSS_SD * Math.sqrt(2.0 * Math.PI)) * Math.exp(-0.5 * ((d / GAUSS_SD) ** 2.0));
+};
 
 class Particle {
   constructor(index) {
@@ -163,8 +172,11 @@ export default class Simulation {
       p.f = fpress.add(fvisc).add(fgrav);
 
       // Mouse Input
-      const scaleFactor = 200.0 * MOUSE_SCALE;
-      p.f.add(mouseV.clone().multiplyScalar(scaleFactor));
+      if (MOUSEDOWN) {
+        const temp = (mousePos.clone().sub(p.pos)).length();
+        const temp2 = mouseV.clone().multiplyScalar(MOUSE_SCALE * getGaussPdf(temp));
+        p.f.add(temp2);
+      }
     });
   }
 
@@ -191,7 +203,6 @@ export default class Simulation {
         p.pos.y = SCR_HEIGHT - EPS;
       }
     });
-    // TODO: add colors based on velocity
   }
 
   updateParticleBuffers = () => {
