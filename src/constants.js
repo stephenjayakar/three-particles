@@ -1,7 +1,7 @@
 export const NUM_PARTICLES = 2000;
-export const MOUSE_SCALE = 10000.0;
-export const SCR_WIDTH = 900;
-export const SCR_HEIGHT = 900;
+export const MOUSE_SCALE = 20000.0;
+export const SCR_WIDTH = 400;
+export const SCR_HEIGHT = 400;
 export const G = -10000 * 9.8;
 export const REST_DENS = 1000.0;
 export const GAS_CONST = 1500.0;

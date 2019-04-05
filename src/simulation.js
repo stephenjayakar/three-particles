@@ -33,8 +33,8 @@ document.body.onmousedown = () => {
 
 document.body.onmousemove = (event) => {
   // Convert to particle space coords
-  let dx = window.innerWidth - SCR_WIDTH;
-  let dy = window.innerHeight - SCR_HEIGHT;
+  const dx = window.innerWidth - SCR_WIDTH;
+  const dy = window.innerHeight - SCR_HEIGHT;
   MOUSEX = event.pageX - (dx / 2);
   MOUSEY = SCR_HEIGHT - (event.pageY - (dy / 2));
 };

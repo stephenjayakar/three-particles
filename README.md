@@ -10,7 +10,7 @@ Recreation of part of my team's CS184's final project in ThreeJS instead of C++ 
  - Add OpenCV (if possible)
 
 # Screenshots
-<img src="screenshots/screen1.png"></img>
+<img src="screenshots/animated_screen.gif"></img>
 
 # Credits
 - CS184 Team members: <a href="https://github.com/FlyingSpringrol">Brian Aronowitz</a>, Will Huang
